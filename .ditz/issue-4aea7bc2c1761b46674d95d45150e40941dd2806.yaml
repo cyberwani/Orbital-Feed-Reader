@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: read unread
+desc: |-
+  what does a read field look like?  what does an unread field look like?
+  How can I read stuff that I looked at a while ago?
+type: :feature
+component: Wordprss
+release: 0.1 - Feeds, Subscribed
+reporter: matt <matt@morelightmorelight.com>
+status: :unstarted
+disposition: 
+creation_time: 2012-09-21 01:33:53.222641 Z
+references: []
+
+id: 4aea7bc2c1761b46674d95d45150e40941dd2806
+log_events: 
+- - 2012-09-21 01:33:54.289551 Z
+  - matt <matt@morelightmorelight.com>
+  - created
+  - ""

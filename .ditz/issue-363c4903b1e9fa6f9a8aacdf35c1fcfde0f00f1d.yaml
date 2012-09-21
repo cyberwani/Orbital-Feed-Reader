@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: what is a feed reader?
+desc: like google reader.  what does it do.  some open source alternatives.
+type: :feature
+component: Wordprss
+release: 0.1 - Feeds, Subscribed
+reporter: matt <matt@morelightmorelight.com>
+status: :unstarted
+disposition: 
+creation_time: 2012-09-21 01:35:04.040218 Z
+references: []
+
+id: 363c4903b1e9fa6f9a8aacdf35c1fcfde0f00f1d
+log_events: 
+- - 2012-09-21 01:35:04.952004 Z
+  - matt <matt@morelightmorelight.com>
+  - created
+  - ""

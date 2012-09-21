@@ -1,0 +1,23 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: How to add a feed
+desc: |-
+  What is a feed?
+  What does an RSS icon look like?
+  Where can I find some good ones?
+  What is OPML?
+  How do I add a specific feed?
+type: :feature
+component: Wordprss
+release: 0.1 - Feeds, Subscribed
+reporter: matt <matt@morelightmorelight.com>
+status: :unstarted
+disposition: 
+creation_time: 2012-09-21 01:36:17.446431 Z
+references: []
+
+id: a6195fe3ece65b8f1d4e0b5b8e876208a81ac6f1
+log_events: 
+- - 2012-09-21 01:36:18.409821 Z
+  - matt <matt@morelightmorelight.com>
+  - created
+  - ""

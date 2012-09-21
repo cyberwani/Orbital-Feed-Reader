@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: how do I remove a feed?
+desc: Go to the feeds page and unsubscribe.  Why two steps?  Because we don't support undo yet.
+type: :feature
+component: Wordprss
+release: 0.1 - Feeds, Subscribed
+reporter: matt <matt@morelightmorelight.com>
+status: :unstarted
+disposition: 
+creation_time: 2012-09-21 01:36:59.564618 Z
+references: []
+
+id: b72c48a9b712cbc629006e9099532c31e8717a7d
+log_events: 
+- - 2012-09-21 01:37:00.519901 Z
+  - matt <matt@morelightmorelight.com>
+  - created
+  - ""
