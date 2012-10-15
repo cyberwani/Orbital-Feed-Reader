@@ -1,4 +1,3 @@
-
 Wprss = Ember.Application.create();
 Wprss.cache = Ember.Object.create({
   mouseX: null,
@@ -24,23 +23,17 @@ Wprss.feedsController = Em.ArrayController.create({
   onInit: null,
   changeUnreadCount:function(id,delta){
     var feed = this.get('content').findProperty('feed_id',id);
-    //console.log(feed.feed_name + "("+feed.unread_count+")");
     feed.set('unread_count', +feed.unread_count + delta);
-    //console.log(feed.unread_count);
   },
-  //createFeed: function(feed,domain,name,id,unread,priv){
   createFeed: function(feedHash){
     feedHash.is_private = (1==feedHash.is_private);
-    feedHash.feed_id = feedHash.id;
     var feed = Wprss.Feed.create(feedHash);
-    //var feed = Wprss.Feed.create({ feed_url: feed, site_url:domain, feed_id:id,feed_name:name,unread_count:unread,is_private:priv==1});
     this.pushObject(feed);
   },
   createFeeds: function(feeds){
     Wprss.feedsController.createFeed({feed_url:'',site_url:'',feed_name:'Fresh Entries',feed_id:null,unread_count:'lots', is_private:true});
     feeds.forEach(function(value){
       Wprss.feedsController.createFeed(value);
-      //Wprss.feedsController.createFeed(value.feed_url,value.site_url,value.feed_name,value.id, value.unread_count,value.private);
     });
   },
   //does the actual work of finding an unread feed in an array
@@ -107,27 +100,36 @@ Wprss.feedsController = Em.ArrayController.create({
       is_private: feed.is_private,
       nonce_a_donce:get_url.nonce_a_donce 
     };
-    jQuery.post(get_url.ajaxurl,data, function(response){
-      if(response.updated || response.inserted )// test to see if the feed actually got saved
-      {
-        //this should be agnostic per screen.
-        //So whoever calls save feed can have something trigger on yay
-        if(successFunction){
-          successFunction(response);
+    jQuery.ajax(
+      get_url.ajaxurl,{
+      type: 'POST',
+      data: data, 
+      dataType:'json',
+      success: function(response){
+        if(response.updated || response.inserted )// test to see if the feed actually got saved
+        {
+          if(response.inserted){
+            Wprss.feedsController.createFeed(response);
+          }
+          //this should be agnostic per screen.
+          //So whoever calls save feed can have something trigger on yay
+          if(successFunction){
+            successFunction(response);
+          }
         }
-        if(response.inserted){
-          Wprss.feedsController.createFeed(response);
+        else{
+          if(failFunction){
+            failFunction(response);
+            console.log(response);
+          }else{
+            //TODO Alert the user?
+            console.log(response);
+          }
         }
-      }
-      else{
-        if(failFunction){
-          failFunction(response);
-        }else{
-          //TODO Alert the user?
-          console.log(response);
-        }
-      }
-    },'json');
+      },
+      error: failFunction,
+
+    });
 
   },
   //select a feed
@@ -165,14 +167,15 @@ Wprss.feedsController = Em.ArrayController.create({
     });
   }.property(),
   updateFeeds: function(feeds){
+  
     var content = Wprss.feedsController.get('content');
-    feeds.forEach(function(value){
-      if(Wprss.feedsController.set(value.id,'unread_count',value.unread_count)){
+    feeds.forEach(function(feed){
+      if(Wprss.feedsController.set(feed.feed_id,'unread_count',feed.unread_count)){
         //great!
       }
       else
       {
-        Wprss.feedsController.createFeed(value.feed_url,value.site_url,value.feed_name,value.id, value.unread_count,value.private);
+        Wprss.feedsController.createFeed(feed);
       }
     });
   },
@@ -201,20 +204,35 @@ Wprss.feedsController = Em.ArrayController.create({
     }
     this.selectFeed(next_feed);
   },
-  unsubscribe: function(feed_id){
+  unsubscribe: function(feed_id,successFunc,failFunc){
     var data = {
       action: 'wprss_unsubscribe_feed',
       feed_id: feed_id,
       nonce_a_donce:get_url.nonce_a_donce 
     };
-    jQuery.post(get_url.ajaxurl,data, function(data){
-      if(data.result)//TODO: test to see if the feed actually got deleted
-      {
-        //remove the feed from the list
-        Wprss.feedsController.removeFeed(data.feed_id);
-        Wprss.selectedFeedController.set('content',null);
-      }
-    },'json');
+    jQuery.ajax({
+      url:get_url.ajaxurl,
+      type:'POST',
+      data: data, 
+      success: function(data){
+        if( data.feed_id)//TODO: test to see if the feed actually got deleted
+        {
+          //remove the feed from the list
+          Wprss.feedsController.removeFeed(data.feed_id);
+          Wprss.selectedFeedController.set('content',null);
+          if(successFunc)
+            successFunc();
+          
+        }
+        else{
+          console.log(data);
+          failFunc();
+        }
+
+      },
+      error: failFunc,
+      dataType:'json',
+    });
   },
   update: function(id){
     var data = {
@@ -303,12 +321,10 @@ Wprss.entriesController = Em.ArrayController.create({
     var currentItem = Wprss.selectedEntryController.get('content');
     //if there is no item selected, select the first one.
     if (null == currentItem ){
-      console.log('no current item');
       currentItem = array.get('firstObject');
 
     }else{
       //if there is an item selected, select the next one.
-      console.log('current item');
       var idx = array.indexOf(currentItem);
       var bottom = false;
       if(++idx == array.length){
@@ -340,7 +356,6 @@ Wprss.entriesController = Em.ArrayController.create({
     jQuery.post(get_url.ajaxurl,data, function(response){
       jQuery('#'+entry.entry_id+">.entry_isloading").hide();
       if(response.updated >0){
-        //console.log("updating");
         entry.set('isRead', isRead);
         Wprss.feedsController.changeUnreadCount(entry.feed_id,isRead?-1:1);
       }
@@ -370,14 +385,13 @@ Wprss.selectedFeedController = Em.Object.create({
     //should change this to show next available feed with unread items
     Wprss.entriesController.selectFeed(id);
   },
-  unsubscribe: function(){
-    Wprss.feedsController.unsubscribe(this.get('content').feed_id);
+  unsubscribe: function(successFunc,failFunc){
+    Wprss.feedsController.unsubscribe(this.get('content').feed_id,
+                                      successFunc,failFunc);
   },
-  saveFeed: function(){
-
-    Wprss.feedsController.saveFeed(this.get('content'),function(response){
-      alert(response.feed_name + ' saved')
-    });
+  saveFeed: function(successFunction, failFunction){
+    var feed = Wprss.selectedFeedController.get('content');
+    Wprss.feedsController.saveFeed(feed,successFunction, failFunction);
   },
   select:function(feed){
     this.set('content',feed);
@@ -418,8 +432,37 @@ Wprss.selectedEntryController = Em.Object.create({
 
 });
 
+//view for looking at a single feed
 Wprss.FeedView = Em.View.extend({
+  
   contentBinding: 'Wprss.selectedFeedController.content',
+  save: function(event){
+    console.log('save');
+    this.toggleHideButtonsAndSpinner();
+    Wprss.selectedFeedController.saveFeed(this.toggleHideButtonsAndSpinner,this.failed);
+  },
+  unsubscribe: function(event){
+    //the event object is currently the button that got pushed.
+    //event.set('disabled',true);
+    //this seems to be the view itself
+    console.log('unsub');
+    this.toggleHideButtonsAndSpinner();
+    Wprss.selectedFeedController.unsubscribe(null,this.failed);
+  },
+  failed: function()
+  {
+    alert("Sorry - there was a problem unsubscribing. Give it another shot." +
+          "If this continues, please contact me and let me know so I can troubleshoot. - Matt");
+    jQuery('#feedViewSpinner').fadeToggle();
+    jQuery('#feedViewUnsubscribeButton > button').fadeToggle()
+    jQuery('#feedViewSaveButton > button').fadeToggle()
+  },
+  toggleHideButtonsAndSpinner: function(){
+    jQuery('#feedViewSpinner').fadeToggle();
+    jQuery('#feedViewUnsubscribeButton > button').fadeToggle()
+    jQuery('#feedViewSaveButton > button').fadeToggle()
+
+  },
 });
 
 Wprss.EntriesView = Em.View.extend({
@@ -523,10 +566,6 @@ Wprss.feedFinder= Em.Object.create({
       //alert(response);
       //TODO if this was a feed, let's make it save!
       if("feed" == response.url_type){
-        console.log('a feed!');
-        console.log(response.orig_url);
-        console.log(response.site_url);
-        console.log(response.feed_name);
         var feed  =  Wprss.Feed.create(
           { feed_url: response.orig_url, 
             site_url: response.site_url, 
@@ -535,11 +574,7 @@ Wprss.feedFinder= Em.Object.create({
             unread_count:0,
             is_private:false
           });
-        console.log("feed " + feed);
         Wprss.feedFinder.set('feedCandidate',feed);
-        console.log( "candidate " + Wprss.feedFinder.feedCandidate);
-
-
       }
       else{
         //TODO if this was a page, let the user choose feeds and then save them.
@@ -560,14 +595,13 @@ Wprss.FeedsForm = Em.View.extend({
   submit: function(event){
     event.preventDefault();
     //actually begin the submission
-    console.log('begin the submission');
     this.findFeed();
   },
   saveFeed: function(){
     var view = this;
     Wprss.feedsController.saveFeed(this.get('feedCandidate'),function(){
       view.dismiss();
-    });
+    },null);
   },
   dismiss: function(){
     var view = this;
@@ -608,8 +642,11 @@ Wprss.FeedsForm = Em.View.extend({
       else{
         //if this was a page, let the user choose feeds and then save them.
         if( response.feeds.length >1){
+          
+          console.log(view);
           view.set('feedCandidate', null);
           view.set('possibleFeeds', response.feeds);
+          console.log(view.possibleFeeds);
         }else
         {
           view.urlField.set('value',response.feeds[0].url);
@@ -631,13 +668,7 @@ function scrollToEntry(currentItem, bottom){
     var body = jQuery('html');
     var adminbar = jQuery('#wpadminbar');
     var commandbar = jQuery('#commandbar');
-    //console.log(window.scrollTop());
-    //TODO why is entryID coming up undefined in this context?
-    //var row = jQuery('#'+currentItem.entryID);
-    //console.log('current entry id: ' + currentItem.feed_id + "_" +currentItem.id);
     var row = jQuery('#'+currentItem.feed_id + "_" +currentItem.id);
-    //console.log('current row: ' + row.offset().top);
-    //body.scrollTop(row.offset().top - adminbar.height());
     if(null === row.offset()){
       console.log('row.offset() was null');
       return;

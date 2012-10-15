@@ -1,19 +1,22 @@
 <div id="opml-dialog" class="modal-window invisible">
+    <div class="clickable dismiss" onclick="opml_dismiss()">
+      X
+    </div>
   <div class="horizontal-form">
     <!--<form id="upload_form" enctype="multipart/form-data" method="post" onsubmit='uploadOpml()'>-->
-      <label>
-        Select an OPML file to import
-        <input type="file" name="import-opml" value="" id="import-opml" placeholder="Select an OPML file" onchange="fileSelected()"/>
-      </label>
-<div id="fileName">
-  
-</div>
-<div id="fileSize">
-  
-</div>
-      <button type='submit' id="uploadButton"  disabled=true  onclick='uploadOpml()'>
-        Upload
-      </button>
+    <label>
+      Select an OPML file to import
+      <input type="file" name="import-opml" value="" id="import-opml" placeholder="Select an OPML file" onchange="fileSelected()"/>
+    </label>
+    <div id="fileName">
+      
+    </div>
+    <div id="fileSize">
+      
+    </div>
+    <button type='submit' id="uploadButton"  disabled=true  onclick='uploadOpml()'>
+      Upload
+    </button>
     <!--</form>-->
   </div>
 </div>
@@ -22,6 +25,15 @@
 function getFile(){
   var file = document.getElementById('import-opml').files[0];
   return file;
+}
+function opml_dismiss(){
+  console.log('OK!');
+  jQuery('#opml-dialog').toggleClass('invisible');
+  jQuery('#import-opml').attr('value','');
+  jQuery('#fileName').html('');
+  jQuery('#fileSize').html('');
+  jQuery('#uploadButton').addProp('disabled');
+
 }
 
 function fileSelected(){
@@ -52,9 +64,11 @@ function uploadOpml(){
         //parse the opml and upload it
         //console.log(e.target.result);
         try{
-          var opml =  jQuery.parseXML(e.target.result);
+          var opml = jQuery(e.target.result);
+          //var opml =  jQuery.parseXML(e.target.result);
           jQuery(opml).find('outline[xmlUrl]').each(function(index){
             var el = jQuery(this);
+            console.log(el);
             var feed = {};
             feed.feed_id = null;
             //TODO later we should let people choose before we upload.
@@ -69,8 +83,7 @@ function uploadOpml(){
           alert('Sorry, we had trouble reading this file through.');
           console.log(ex);
         }
-        jQuery('#opml-dialog').toggleClass('invisible')
-        jQuery('#import-opml').attr('value','');
+        opml_dismiss();
 
       };
     })(f);

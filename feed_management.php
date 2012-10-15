@@ -32,15 +32,20 @@
             {{view Em.Checkbox valueBinding="is_private" title="This Feed is Private! Don't show it to other people."}}
           </label>
           {{#if  feed_id}}
-            <label>
+            <label id="feedViewUnsubscribeButton">
               Get rid of this feed! Seriously! 
-              {{#view Em.Button target="Wprss.selectedFeedController" action="unsubscribe"}} Unsubscribe {{/view}}
+              <a {{action unsubscribe}} class="button" >Unsubscribe</a>
             </label>
           {{/if}}
-          <div>
-          {{#view Em.Button target="Wprss.selectedFeedController" action="saveFeed" }}Save{{/view}}
+          <div id="feedViewSaveButton">
+          <a {{action save}} class="button">Save</a>
           </div>
       {{/with }}
+
+          <img style="display:none;" id='feedViewSpinner' src="<?php
+            echo plugins_url("ajax-loader.gif", __FILE__);
+
+          ?>" />
       {{/view}}
       
     {{else}}
