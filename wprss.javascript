@@ -592,10 +592,18 @@ Wprss.FeedsForm = Em.View.extend({
   urlField: null,
   feedCandidate:null,
   possibleFields:null,
+  showHelp: false,
   submit: function(event){
     event.preventDefault();
     //actually begin the submission
     this.findFeed();
+  },
+  resetDisplay: function(){
+    this.set('feedCandidate',null);
+    this.set('possibleFeeds',null);
+    this.set('showHelp', false);
+    
+
   },
   saveFeed: function(){
     var view = this;
@@ -603,28 +611,28 @@ Wprss.FeedsForm = Em.View.extend({
       view.dismiss();
     },null);
   },
+  
   dismiss: function(){
     var view = this;
-    view.set('feedCandidate',null);
-    view.set('possibleFeeds',null);
+    view.resetDisplay();
     view.urlField.set('value',null);
     jQuery('#subscribe-window').toggleClass('invisible');
-
   },
   findFeed: function(evt){
+    var view = this;
+    view.resetDisplay();
+    
     // First get the feed url or site url from the link
     var url = this.getPath('urlField.value');
     if(evt){
       url = evt.context;
     }
-      
     //then ask the backend to validate the feed details
     var data = {
       action: 'wprss_find_feed',
       url: url,
       nonce_a_donce:get_url.nonce_a_donce 
     };
-    var view = this;
     jQuery.get(get_url.ajaxurl, data, function(response){
       //if this was a feed, let's make it saveable!
       if("feed" == response.url_type){
@@ -639,19 +647,42 @@ Wprss.FeedsForm = Em.View.extend({
         view.set('feedCandidate', feed);
         
       }
-      else{
+      else if("html" == response.url_type){
+        if(null == response.feeds){
+          //No feeds discovered!
+          //TODO Tell them no feeds found
+          //TODO Tell them how to discover more feeds
+          view.set('showHelp',true);
+          //TODO Tell them what rss icons look like
+          
+          console.log(response);
+
+        }
         //if this was a page, let the user choose feeds and then save them.
-        if( response.feeds.length >1){
+        else if(1 < response.feeds.length ){
           
           console.log(view);
           view.set('feedCandidate', null);
           view.set('possibleFeeds', response.feeds);
           console.log(view.possibleFeeds);
-        }else
+        }else if( 1==response.feeds.length )
         {
           view.urlField.set('value',response.feeds[0].url);
           view.findFeed();
         }
+        else{
+          //No feeds discovered!
+          //TODO Tell them no feeds found
+          //TODO Tell them how to discover more feeds
+          view.set('showHelp',true);
+          //TODO Tell them what rss icons look like
+          
+          console.log(response);
+        }
+      }
+      else{
+        //we didn't get a feed response back!
+        //TODO run and tell that
       }
     },"json");
   },
