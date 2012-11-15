@@ -39,22 +39,22 @@ require_once 'backend.php';
 add_action('plugins_loaded', 'wprss_version_check');
 function wprss_version_check(){
   global $wprss_version;
-  global $wrss_db_v_opt_string;
-  if(get_site_option($wrss_db_v_opt_string) != $wprss_db_version){
-    _log(get_site_option($wrss_db_v_opt_string) );
-    //upgrayedd the db
-    _log("Wordprss: Installing or Upgrayedding Database");
+  global $wprss_version_opt_string;
+  if(get_site_option($wprss_version_opt_string) != $wprss_version){
+    //We are on a new version!
+    _log(get_site_option($wprss_version_opt_string) );
+    _log("Set up new tutorials");
     //Two D's for a double dose of that primping.
-    require_once 'install_upgrade.php';
-    wprss_install_db();
-    update_option($wrss_db_v_opt_string, $wprss_db_version);
+    require_once 'pointers.php';
+    show_new_pointers();
+    update_option($wprss_version_opt_string, $wprss_version);
   }
 }
 
 add_action('plugins_loaded', 'wprss_update_db_check');
 function wprss_update_db_check(){
   global $wprss_db_version;
-  global $wrss_db_v_opt_string;
+  global $wordprss_db_version_opt_string;
   if(get_site_option($wordprss_db_version_opt_string) != $wprss_db_version){
     _log(get_site_option($wrss_db_v_opt_string) );
     //upgrayedd the db
