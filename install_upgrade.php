@@ -101,23 +101,6 @@ function wprss_install_data(){
   global $current_user;
   $user_id = $current_user->ID;
   //install some sample feeds
-  $feed = WprssFeeds::save(
-  array(
-  //'feed_url'=>'http://www.morelightmorelight.com/feed/',
-  'feed_url'=>'http://localhost/morelightmorelight/feed',
-  'site_url'=> 'http://www.morelightmorelight.com',
-  'is_private'=>0,
-  //'owner' => $current_user->ID,
-  'feed_name' =>'More Light! More Light!'));
-  
-  $bb = WprssFeeds::save(
-  array(
-    //'feed_url'=>'http://boingboing.net/feed/',
-    'feed_url'=>'http://localhost/boingboing/iBag',
-    'site_url'=> 'http://boingboing.net',
-    'is_private'=>0,
-    //'owner' => $current_user->ID,
-    'feed_name' => 'Fake Boing Boing'));
   $wprssfeed = WprssFeeds::save(
   array(
     //'feed_url' => 'http://mattkatz.github.com/Wordprss/ditz/html/feed.xml',
@@ -138,7 +121,7 @@ function wprss_install_data(){
     'entered' =>date ("Y-m-d H:m:s"), 
     'author' => 'Matt Katz'
   ));
-  for ($i = 1; $i <= 120; $i++) {
+  for ($i = 1; $i <= 12; $i++) {
     //Insert a sample entry
     WprssEntries::save(array(
       'feed_id'=> $wprssfeed->feed_id,
@@ -151,6 +134,23 @@ function wprss_install_data(){
       'author' => 'Matt Katz'
     ));
     $i++;
+  $feed = WprssFeeds::save(
+  array(
+  //'feed_url'=>'http://www.morelightmorelight.com/feed/',
+  'feed_url'=>'http://localhost/morelightmorelight/feed',
+  'site_url'=> 'http://www.morelightmorelight.com',
+  'is_private'=>0,
+  //'owner' => $current_user->ID,
+  'feed_name' =>'More Light! More Light!'));
+  
+  $bb = WprssFeeds::save(
+  array(
+    //'feed_url'=>'http://boingboing.net/feed/',
+    'feed_url'=>'http://localhost/boingboing/iBag',
+    'site_url'=> 'http://boingboing.net',
+    'is_private'=>0,
+    //'owner' => $current_user->ID,
+    'feed_name' => 'Fake Boing Boing'));
 
   }
   WprssEntries::save(array(

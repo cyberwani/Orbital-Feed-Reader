@@ -44,9 +44,8 @@ function wprss_version_check(){
     //We are on a new version!
     _log(get_site_option($wprss_version_opt_string) );
     _log("Set up new tutorials");
-    //Two D's for a double dose of that primping.
-    require_once 'pointers.php';
-    show_new_pointers();
+    //The Wprss Tutorials feed 
+    Wprss::refresh(0);
     update_option($wprss_version_opt_string, $wprss_version);
   }
 }
