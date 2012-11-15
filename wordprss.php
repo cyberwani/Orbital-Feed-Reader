@@ -12,22 +12,33 @@ $page_title = "Voracious Reader";
 $menu_title = "CONSUME";
 $capability = 'edit_posts';
 $slug = 'wordprss.php';
+
+//Current version of this plugin
+global $wprss_version;
+$wprss_version = '0.1';
+//Option string to see what version we last had
+global $wprss_version_opt_string;
+$wprss_version_opt_string = 'wordprss_version';
+//Current version of the db for this plugin
 global $wprss_db_version ;
 $wprss_db_version = '0.1';
+//Option string to see what version we last stored in DB.
 global $wordprss_db_version_opt_string;
-$wrss_db_v_opt_string = 'wordprss_db_version';
+$wordprss_db_version_opt_string= 'wordprss_db_version';
+//What we are prefixing all our table names with
 global $tbl_prefix;
 $tbl_prefix = 'wprss_' ;
 
+//Check to make sure no one is trying to call this plugin directly
 if ( !function_exists( 'add_action' ) ) {
   echo "Hi there!  I'm just a plugin, not much I can do when called directly.";
   exit;
 }
 require_once 'backend.php';
 
-add_action('plugins_loaded', 'wprss_update_db_check');
-function wprss_update_db_check(){
-  global $wprss_db_version;
+add_action('plugins_loaded', 'wprss_version_check');
+function wprss_version_check(){
+  global $wprss_version;
   global $wrss_db_v_opt_string;
   if(get_site_option($wrss_db_v_opt_string) != $wprss_db_version){
     _log(get_site_option($wrss_db_v_opt_string) );
@@ -37,6 +48,21 @@ function wprss_update_db_check(){
     require_once 'install_upgrade.php';
     wprss_install_db();
     update_option($wrss_db_v_opt_string, $wprss_db_version);
+  }
+}
+
+add_action('plugins_loaded', 'wprss_update_db_check');
+function wprss_update_db_check(){
+  global $wprss_db_version;
+  global $wrss_db_v_opt_string;
+  if(get_site_option($wordprss_db_version_opt_string) != $wprss_db_version){
+    _log(get_site_option($wrss_db_v_opt_string) );
+    //upgrayedd the db
+    _log("Wordprss: Installing or Upgrayedding Database");
+    //Two D's for a double dose of that primping.
+    require_once 'install_upgrade.php';
+    wprss_install_db();
+    update_option($wordprss_db_version_opt_string, $wprss_db_version);
   }
 }
 function wprss_sample_data_check(){
@@ -163,6 +189,7 @@ function wprss_update_job(){
 }
 
 function wprss_activate(){
+  wprss_version_check();
   wprss_update_db_check();
   wprss_sample_data_check();
   wprss_set_up_cron();
