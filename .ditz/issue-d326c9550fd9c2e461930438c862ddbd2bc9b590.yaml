@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Bring up to wordpress coding standards
+desc: |-
+  http://codex.wordpress.org/WordPress_Coding_Standards
+  Fair amount of work to do there.
+type: :task
+component: Wordprss
+release: 0.2 Wordpress integration
+reporter: matt <matt@kingofrats>
+status: :unstarted
+disposition: 
+creation_time: 2012-11-15 02:03:52.396517 Z
+references: []
+
+id: d326c9550fd9c2e461930438c862ddbd2bc9b590
+log_events: 
+- - 2012-11-15 02:03:54.101550 Z
+  - matt <matt@kingofrats>
+  - created
+  - ""
