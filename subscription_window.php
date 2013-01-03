@@ -39,7 +39,7 @@
                 </label>
               {{/if}}
               <div class="clickable button" {{action "saveFeed" }}>
-              Save {{feed_name}}
+              Save "{{feed_name}}"
               </div>
         {{/with }}
       {{/if}}
