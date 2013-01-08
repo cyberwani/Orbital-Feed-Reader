@@ -1,0 +1,22 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Change read/unread logic.
+desc: |-
+  What about this:
+  # On an item, you press j.
+  # The current item gets marked "read".
+  # The next unread item get marked "current".
+type: :bugfix
+component: Wordprss
+release: 0.1 - Feeds, Subscribed
+reporter: matt <matt@kingofrats>
+status: :unstarted
+disposition: 
+creation_time: 2013-01-03 00:22:50.267100 Z
+references: []
+
+id: 4ce489a91b95f553b6b111a06def55f07f33d93b
+log_events: 
+- - 2013-01-03 00:22:55.278378 Z
+  - matt <matt@kingofrats>
+  - created
+  - ""
