@@ -1,0 +1,79 @@
+TODO
+change arrows to icons. keycaps for keys.
+screenshots for appropriate clicky bits
+rss icon add.
+screenshot feeds page and submenu feeds page.
+
+Welcome to Wordprss!
+
+Hi, this is Wordprss - a feed reader for WordPress. Let's walk through how to use Wordprss.
+We'll cover:
+* How to navigate through feeds and posts in the feed.
+* How to mark an item as read or unread.
+* Some handy keyboard shortcuts.
+* How to add a new feed or get rid of one.
+* How to edit a feed title or URL.
+* What is a feed reader, anyway?
+* What can you do with this feed reader?
+* How to support Wordprss and get more from it.
+
+Keep this feed around - it will update every time there is a new version of Wordprss for you.  You'll see a note on the upgrade and how to get it, and then you'll see more features and how to use them.
+
+Press the down arrow on your keyboard and let's get started.
+
+
+# How to navigate through feeds and posts in the feed.#
+You JUST DID! You pressed the down arrow, and that tells us to go to the next item in a feed. If you press the up arrow, we'll scroll back up to the previous item. But then you'd just press down to get back here again, so don't bother. You can always scroll down, or you can use "j" and "k" to go through items as well.
+
+When you click on an item, or go to it by clicking the down arrow, we mark that item as "Read."  One of the things a feed reader does is keep track of what you've already read and not bother showing it to you again. So if you don't click on the item or hit "j" to get to it, we'll keep it around for you to read. Once an item is marked as read it stays hidden so you don't see it over and over.
+
+So a feed is just a way to find out what are new things a website wants you to know about. Feeds contain items - sometimes we'll call them entries or posts.  
+
+When Wordprss pulls a feed and downloads the items, it stores them for you.  You can see the list of feeds you are subscribed to over there on the right hand side.
+
+I've put a handy group of default feeds in there for you to get started with. There's my personal blog, the update feed for Wordprss, some awesome folks I think you might like, and so on.  Later I'll show you how to get rid of them ( if that's what you REALLY WANT ) or import in a bunch of feeds from another feed reader.
+
+You can navigate between these different website feeds by clicking on those links on the right.  Go ahead, click on a few, but then click back on this one called "Wordprss News" and we'll cover a few more things.  Go on.
+
+# How to mark an item as read or unread.
+
+If you clicked over to another feed and came back to the Wordprss News feed, you aren't seeing the last item you were looking at.  It was marked as read and by default wordprss only shows you things you haven't read.  You can always go back and see stuff you already read by clicking "Show Read Items" up at the top. 
+Sometimes a site publishes too much and I just can't keep up. If you want to mark ALL the items in a feed as read you can just click "Mark all as Read" up at the top in the action bar.
+If you click on an item that has been marked read, we'll unmark it. Click again, back to read. Likewise, you can hit the letter "u" on your keyboard and that will also toggle the read/unread flag.
+
+Hit j or the down arrow key to discover some other handy keyboard shortcuts.
+
+* Some handy keyboard shortcuts.
+
+j or down arrow - go to the next item and mark it as read.
+k or up arrow - go the previous item.
+h or left arrow - go the the previous feed with unread items.
+l or right arrow - go the next feed with unread items.
+u - toggle the current item's read/unread status.
+o - open the original item at it's main site url. Sometimes you want to see the entry where it was published!
+
+
+* How to add a new feed.
+The world wide web is big and there is much to read. When you go to a website you want to keep up with, here's what you do. Look for a feed icon on that website - that's the symbol for a feed and you should copy the url it links to. Then go to wordprss and we'll subscribe to that feed. Over at the top of the feed list you'll see a little plus. Click that + sign and it will ask you for a feed. Paste it into the dialog and click add feed.
+
+Sometimes you can't figure out what the feed url is or you are too tired to do it because of all the important things you use your head for. No problem. Wordprss will do it's best to figure out the feed url if you just put in the url of the website.  It will ask you to pick among whatever feeds you find. 
+
+Once you've got a feed url, Wordprss will try to figure out what to call this feed and give you a chance to mark this feed as private. If you're all done, just click the Save button to add this to your feed list. Wordprss will start polling this feed and getting new items.
+
+* How to edit a feed title or URL.
+Say you want to rename a feed or change the url. You can manage everything about a feed in the feeds menu.  Just click over there on the left where it says "Feeds".  It will bring you to a screen like this: 
+In there you can edit everything about the feed or even delete it - just hit "Unsubscribe" to delete the feed. 
+
+* What is a feed reader, anyway?
+A feed reader is sort of like an inbox for the world wide web. Instead of going to sites and checking to see if they have updated you can let the feed reader handle it for you. It goes off to all your websites, checks them for you and lets you know what's new. Here's a very cute video about how RSS and all that works. http://www.youtube.com/watch?v=0klgLsSxGsU
+
+* What can you do with this feed reader?
+You already know a bunch of cool website that you want to keep up on, but here are some other ways to use wordprss! 
+ - Read stories using Daily Lit.
+ - If you are in the US, track what your senators and representatives are getting up to.
+ - Get alerts or daily deals in an easier to manage way.
+* How to support Wordprss and get more from it.
+Oh, I'm so glad you asked! You can <a href="mailto:wordprss@morelightmorelight.com">email to say thank you</a> or to say what you use it for or tell me a story. Otherwise: 
+ - Do you have money? You can also send me money or buy me things! I can exchange money for goods and services that I need. 
+ - Do you have ideas for how things can be better? Send me bugs or feature requests! All this work is wasted if no one uses the app. Your feedback is SO IMPORTANT to me. I hope I can make this really useful for all of us. This is a labor of love, so you are welcome to prioritize your bug or feature request by BRIBERY! Send me goods, services or money and let me know what is important to you!
+ - Are you a developer? <a href="http://github.com/mattkatz/Wordprss/">Wordprss is on Github!</a> Please send pull requests! Please send new features or bug fixes! Keep me from being lonely. I respond ENTHUSIASTICALY to your feedback. Hopefully you are a better coder than I am and can teach me how I should have made this better.
